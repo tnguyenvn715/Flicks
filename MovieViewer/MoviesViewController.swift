@@ -17,6 +17,12 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     var movies: [NSDictionary]?
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Initialize a UIRefreshControl
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: "refreshControlAction:", forControlEvents: UIControlEvents.ValueChanged)
+        tableView.insertSubview(refreshControl, atIndex: 0)
+        
         tableView.dataSource = self
         tableView.delegate = self
         
@@ -48,6 +54,8 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
                             print("response: \(responseDictionary)")
                             self.movies = responseDictionary["results"] as! [NSDictionary]
                             self.tableView.reloadData()
+                            refreshControl.endRefreshing()
+
                     }
                 }
         })
@@ -55,6 +63,8 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     
     
     }
+    
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -90,7 +100,6 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         
         print("row \(indexPath.row)")
         return cell
-        
         
         
     }
