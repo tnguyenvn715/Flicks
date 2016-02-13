@@ -23,7 +23,6 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: "refreshControlAction:", forControlEvents: UIControlEvents.ValueChanged)
         tableView.insertSubview(refreshControl, atIndex: 0)
-        
         tableView.dataSource = self
         tableView.delegate = self
         
@@ -50,7 +49,6 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
                         data, options:[]) as? NSDictionary {
                             // Hide HUD once the network request comes back (must be done on main UI thread)
                             MBProgressHUD.hideHUDForView(self.view, animated: true)
-                            
 
                             //print("response: \(responseDictionary)")
                             self.movies = responseDictionary["results"] as! [NSDictionary]
@@ -88,6 +86,22 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         let overview = movie["overview"] as! String
         cell.titleLabel.text = title
         cell.overviewLabel.text = overview
+        cell.titleLabel.textColor = UIColor.whiteColor()
+        cell.overviewLabel.textColor = UIColor.whiteColor()
+        
+        //customize color cell
+        let myHighlightColor = UIColor(red: 1, green: 165/255, blue: 0, alpha: 1)
+        let myBgColor = UIColor(red: 0/255, green: 131/255, blue: 143/255, alpha: 1)
+        
+        // Set cell background color
+        cell.backgroundColor = myBgColor
+        
+        // Use a red color when the user selects the cell
+        let backgroundView = UIView()
+        backgroundView.backgroundColor = myHighlightColor
+        cell.selectedBackgroundView =  backgroundView
+        
+        
         let posterBaseUrl = "https://image.tmdb.org/t/p/w342"
         if let posterPath = movie["poster_path"] as? String {
             
@@ -100,6 +114,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
             cell.posterView.image = nil
         }
         
+       
         
         //print("row \(indexPath.row)")
         return cell
@@ -107,8 +122,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         
     }
    
-    
-    // MARK: - Navigation
+      // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
